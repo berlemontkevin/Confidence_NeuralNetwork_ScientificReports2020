@@ -1,0 +1,168 @@
+
+
+```{r}
+library("arm")
+ 
+# This part analyzes the numerical simulations in the context of the LMM.
+
+MyData <- read.csv(file=".\\data\\dataNetwork.csv", header=TRUE, sep=",")
+
+Resp1=0.5*(1+MyData[1:4862,1]*sign(MyData[1:4862,4]))
+RtMyData=MyData[2:4862,5]
+logRt=log(RtMyData)
+AV = MyData[2:4862,4]
+Pconf = MyData[1:4861,3]
+PRt=log(MyData[1:4861,5])
+pRt=MyData[1:4861,5]
+
+Repres =Resp1[2:4862]
+
+for(i in 1:4861){
+  if (Resp1[i]==Resp1[i+1]){
+    Repres[i] <- 1
+  }
+  else{Repres[i] <- 0}
+}
+
+
+
+AAV = abs(AV)
+PE=0.5+0.5*MyData[1:4861,1]
+Name = MyData[2:4862,2]
+
+for(i in 1:4861){
+  if (Pconf[i] < median(MyData$Pconf[MyData$Name==Name[i]])){
+    Pconf[i] <- 0
+  }
+  else{Pconf[i] <- 1}
+}
+library(lmerTest)
+d = data.frame(RtMyData,Pconf,Name,AV,AAV,logRt,PRt,Repres,PE,pRt,RtMyData)
+
+l0 <- lmer(logRt~AAV+Repres+PRt+Pconf+(1+AAV+PRt|Name),
+          data=d);
+
+summary(l0)
+
+
+
+```
+```{r}
+---
+title: "Data Analysis Manip DEC"
+output: html_notebook
+---
+
+  # LMM for the experimental data
+  
+library(lme4)
+
+
+
+library(car)
+
+
+MyData <- read.csv(file=".\\data\\Manip3.csv", header=TRUE, sep=",")
+
+
+MyData=MyData[2:6602,1:13]
+Resp1=MyData[2:6601,7]
+RtMyData=MyData[2:6601,6]
+RtMyData2=MyData[2:6601,6]
+logRt=log(RtMyData)
+AV = MyData[2:6601,5]
+Pconf = MyData[1:6600,13]
+MyData$AngleValue=abs(MyData$AngleValue)
+AAV = abs(MyData[2:6601,5])
+PE=MyData[2:6601,10]
+Acc=(MyData[2:6601,9]+1)/2
+Name = MyData[2:6601,1]
+for(i in 1:6600){
+  if (Pconf[i] < median(MyData$Resp2[MyData$Name==Name[i]])){
+    Pconf[i] <- 0
+  }
+  else{Pconf[i] <- 1}
+}
+PRt=log(MyData[1:6600,6])
+pRt=MyData[1:6600,6]
+Repres =MyData[2:6601,7]
+
+for(i in 1:6599){
+  if (Resp1[i]==Resp1[i+1]){
+    Repres[i] <- 1
+  }
+  else{Repres[i] <- 0}
+}
+
+library(lmerTest)
+
+d = data.frame(RtMyData,RtMyData2,Pconf,Name,AV,AAV,PE,Resp1,logRt,PRt,Repres)
+
+
+l <- lmer(logRt~AAV + Pconf + PRt + Repres + (1+AAV+PRt |Name),data=d)
+summary(l)
+
+ll <- lmer(logRt~AAV + PRt + Repres + (1+AAV+PRt |Name),data=d)
+anova(l,ll)
+
+lll <- lmer(logRt~ (1 |Name),data=d)
+
+anova(l,lll)
+l0 <- lmer(logRt~AAV + Repres + (1+AAV |Name),data=d)
+
+anova(l,l0)
+
+l00 <- lmer(logRt~AAV + Pconf + PRt + Repres + (1 |Name),data=d)
+anova(l,l00)
+
+
+
+# Comapraison between the analysis of the non-linearity and the experimental data 
+
+# Normalisation des RTs
+#- mean(d$RtMyData[d$Name == d$Name[i]])
+for(i in 1:6600){
+  
+    d$RtMyData2[i] <- (d$RtMyData[i] /(sqrt(var(d$RtMyData[d$Name == d$Name[i]]))))
+}
+
+
+
+#x score transform
+
+library(outliers)
+scores(d$RtMyData[d$Name == 1],type="z")
+
+
+  
+
+test = d$RtMyData2[d$Repres==1 & d$Pconf==1 & d$AAV==0.2]
+mean(test)
+test2 = d$RtMyData2[d$Repres==1 & d$Pconf==0 & d$AAV==0.2]
+mean(test2)
+wilcox.test(test,test2)
+t.test(test,test2)
+
+test = d$RtMyData2[d$Repres==0 & d$Pconf==1 & d$AAV==0.2]
+mean(test)
+test2 = d$RtMyData2[d$Repres==0 & d$Pconf==0 & d$AAV==0.2]
+mean(test2)
+wilcox.test(test,test2)
+t.test(test,test2)
+
+
+test = d$RtMyData2[d$Repres==0 & d$Pconf==1 & d$AAV==1.6]
+mean(test)
+test2 = d$RtMyData2[d$Repres==0 & d$Pconf==0 & d$AAV==1.6]
+mean(test2)
+wilcox.test(test,test2)
+t.test(test,test2)
+
+test = d$RtMyData2[d$Repres==1 & d$Pconf==1 & d$AAV==1.6]
+mean(test)
+test2 = d$RtMyData2[d$Repres==1 & d$Pconf==0 & d$AAV==1.6]
+mean(test2)
+wilcox.test(test,test2)
+t.test(test,test2)
+```
+

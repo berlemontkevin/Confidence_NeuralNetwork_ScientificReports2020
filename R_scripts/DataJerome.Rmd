@@ -1,0 +1,311 @@
+---
+title: "DataJerome"
+output: html_document
+---
+```{r}
+load("data.R")
+
+source("R_Lib_Sackur.R")
+
+
+  data$conf <- data$resp2
+
+  df <- droplevels(data[data$manip2=='un',])
+  df <- data
+  sujs <- unique(df$suj); length(sujs)
+
+
+  e <- evalq(aggregate(list(acc=acc), list(suj=suj, alpha=abs(alpha)), mean),
+             df[df$alpha!=0 & !df$error,])
+  f <- evalq(aggregate(list(sdAcc=acc), list(suj=suj, alpha=abs(alpha)), sd),
+             df[df$alpha!=0 & !df$error,])
+  g <- evalq(aggregate(list(conf=conf), list(suj=suj, alpha=abs(alpha)), sd),
+             df[df$alpha!=0 & !df$error,])
+
+  e <- merge(e, f)
+  e <- merge(e, g)
+
+  g <- evalq(aggregate(list(conf=conf), list(suj=suj, alpha=abs(alpha)), quantile),
+             df[df$alpha!=0 & !df$error,])
+
+  g <- data.frame(cbind(g[,1:2], g$conf))
+  names(g) <- c('suj', 'alpha', 'min', 'q1', 'med', 'q2', 'max')
+  g$interQ <- g$q2 - g$q1
+
+
+  f <- evalq(aggregate(list(acc=acc), list(alpha=alpha), mean), e); f
+  g <- evalq(aggregate(list(interQ=interQ), list(alpha=alpha), mean), g); g
+  boxplot(e$sdAcc~e$alpha)
+
+  sujs <- unique(as.character(data$suj))
+
+  perfSujs <- evalq(aggregate(list(acc=acc), list(suj=suj, alpha=alpha), mean),
+                    data[data$block=='confidence' & !data$error & abs(data$alpha)==.8,]) 
+
+  e <- evalq(aggregate(list(manip2=manip2), list(suj=suj), unique), data)
+  f <- evalq(aggregate(list(counts=acc), list(suj=suj), sum),
+             data[data$block=='confidence' & !data$error & abs(data$alpha)==.8,]) 
+
+  perfSujs <- merge(perfSujs, e)
+  perfSujs <- merge(perfSujs, f)
+
+  tooGoodSujs <- unique(droplevels(perfSujs$suj[perfSujs$acc==1]))
+  e <- merge(e, perfSujs[perfSujs$acc==1,]); e
+  table(e$manip)
+
+  length(tooGoodSujs)
+
+  metaSujs <- sujs[!sujs %in% tooGoodSujs]
+  save(metaSujs, file="metaSujs.R")
+  
+  
+library(metaSDT)
+  nConfLevels <- 3
+
+  ## Note that there are many ways to compute the input vectors for
+  ## meta-d' computations: you can either do it with the raw confidence
+  ## data or you can bin. If you bin, you can do it with quantiles or
+  ## with fixed boundaries. Those two alternatives are available in the
+  ## following function and only depend on the way you compute breaks.
+  ## Choose to comment whichever you prefer. Notice that in order to use
+  ## the raw levels, you should use nConfLevels = the number of levels
+  ## on the original scale (here, 9).
+
+  L <- do.call(rbind, lapply(metaSujs, function(s){
+      print(s)
+      df <- data[data$block=='confidence' & !data$error & abs(data$alpha)==.8 & data$suj==s,] 
+      breaks <- seq(0, 1, length.out=nConfLevels+1); breaks[1] <- -.1
+  ##    breaks <- quantile(df$resp2, probs=seq(0, 1, length.out=nConfLevels+1));
+  ##    breaks[1] <- -.1
+      t1 <- rev(evalq( hist(resp2, breaks=breaks, plot=F),
+                      df[df$alpha>0 & df$resp==0,])$counts)
+      t2 <- evalq( hist(resp2, breaks=breaks, plot=F),
+                  df[df$alpha>0 & df$resp==1,])$counts
+      S1Counts <- c(t1, t2)
+      t1 <- rev(evalq( hist(resp2, breaks=breaks, plot=F),
+                      df[df$alpha<0 & df$resp==0,])$counts)
+      t2 <- evalq( hist(resp2, breaks=breaks, plot=F),
+                  df[df$alpha<0 & df$resp==1,])$counts
+      S2Counts <- c(t1, t2)
+      fitMDP <- fit_meta_d_MLE(S1Counts, S2Counts)
+      return(data.frame(suj=s, mdDiff = unique(fitMDP$M_diff),
+                        mdRatio=unique(fitMDP$M_ratio), dprime=unique(fitMDP$da),
+                        metaDprime=unique(fitMDP$meta_da)))
+  }))
+
+  dfMeta <- L
+  nrow(dfMeta)
+
+  save(dfMeta, file='dfMeta.R')
+  
+  
+  data$conf <- data$resp2
+
+  df <- data
+
+  L <- lapply(metaSujs,
+              function(s){
+                  i <- df$suj==s & df$block=='confidence' & df$error==FALSE &
+                      abs(df$alpha)==.8
+                  if (mean(df$acc[i]) == 1) {print(s)} else {
+                  ROC <- evalq(roc2(conf, acc, n=5, col=1, plot=FALSE, add=FALSE),
+                               droplevels(df[i,]))
+                  return(data.frame(suj=s, auc=ROC$auc+.5, b2=ROC$B2))
+                                                                                                        }
+              })
+
+  AUCs <- do.call(rbind, L)
+  nrow(AUCs)
+  e <- evalq(aggregate(list(manip2=manip2), list(suj=suj), unique), data)
+  AUCs <- merge(AUCs, e)
+
+  head(AUCs)
+
+  m <- 'trois'
+  mean(AUCs$auc[AUCs$manip2==m])
+  sd(AUCs$auc[AUCs$manip2==m])
+  t.test(AUCs$auc[AUCs$manip2==m], mu=.5)
+
+  #load('RObjectFiles/dfMeta.R')
+
+  temp <- merge(dfMeta, AUCs); nrow(temp)
+  dfMeta <- temp
+  save(dfMeta, file='dfMeta.R')
+
+  
+  pdf(file='ROCs.pdf', width=5, height=5)
+
+  cols <- c('black', 'red', 'green')
+  experiments <- c('un', 'deux', 'trois')
+  par(mfrow=c(2,2))
+  for (expIndex in 1:3){
+      sujs <- unique(df$suj[df$manip2==experiments[expIndex]])
+      sujs <- intersect(sujs, metaSujs); length(sujs)
+      L <- lapply(sujs,
+                  function(s){
+                      i <- df$suj==s & df$block=='confidence' & df$error==FALSE &
+                          abs(df$alpha)==.8
+                      if (mean(df$acc[i]) == 1) {print(s)}
+                      else {
+                          ROC <- evalq(roc2(conf, acc, n=4, col=1,
+                                            plot=FALSE, add=FALSE),
+                                       droplevels(df[i,]))
+                          return(data.frame(fas=ROC$fas, hits=ROC$hits))
+                      }
+                  })
+      if (expIndex==1){
+          L <- L[-4]
+      }   
+      M <- do.call(rbind, L)
+      HITS <- matrix(M[,2], nrow=5)
+      FAS <- matrix(M[,1], nrow=5)
+      mFas <- apply(FAS, 1, mean); mHits <- apply(HITS, 1, mean)
+      seFas <- apply(FAS, 1, se); seHits <- apply(HITS, 1, se)
+      ebHX0 <- mFas - seFas ; ebHY0 <- mHits
+      ebHX1 <- mFas + seFas ; ebHY1 <- mHits
+      ebVX0 <- mFas ; ebVY0 <- mHits - seHits
+      ebVX1 <- mFas ; ebVY1 <- mHits + seHits
+      couleur <- cols[expIndex]
+      if (expIndex==1){
+          plot(mFas, mHits, type='b', ylim=c(0, 1), xlim=c(0, 1), col=couleur, lwd=3);
+      }
+      else {
+          lines(mFas, mHits, type='b', col=couleur, lwd=3);
+      }
+      segments(ebHX0, ebHY0, ebHX1, ebHY1, col=couleur, lwd=3)
+      segments(ebVX0, ebVY0, ebVX1, ebVY1, col=couleur, lwd=3)
+      lines(c(0, 1), c(0,1), lty=2)
+  }
+
+  dev.off()
+  
+
+```
+```{r}
+## Per analysis of blocks effects
+
+source('/home/jerome/science/0librairies/R_Lib_Sackur.r')
+  setwd('/home/jerome/science/confiance/FOMeta')
+  load('RObjectFiles/data.R'); length(unique(data$suj)); max(data$rt); nrow(data)
+  library(lme4)
+  library(car)
+
+  df <- data[data$manip2=='un',]; length(unique(df$suj))
+  contrasts(df$block) <- contr.Sum(2)
+  is.factor(df$suj)
+  sujs <- unique(df$suj)
+
+  e <- evalq(aggregate(list(acc=acc), list(suj=suj, block=block), mean), df[df$alpha!=0,])
+  f <- evalq(aggregate(list(acc=acc), list(block=block), mean), e); f
+  t.test(e$acc[e$block=='confidence'], e$acc[e$block=='noConfidence'], paired=TRUE)
+
+  l0 <- glmer(resp~alpha*block+(1+alpha*block|suj), glmerControl(optimizer = "bobyqa"),
+              family='binomial', data=df)
+  l1 <- glmer(resp~alpha*block+(1+alpha+block|suj), glmerControl(optimizer = "bobyqa"),
+              family='binomial', data=df)
+  l2 <- glmer(resp~alpha*block+(1|suj), glmerControl(optimizer = "bobyqa"),
+              family='binomial', data=df)
+
+  anova(l0, l1)
+  anova(l0, l2)
+  summary(l0)
+  
+  lNull <- glmer(resp~alpha+block+(1+alpha+block|suj), glmerControl(optimizer = "bobyqa"),
+              family='binomial', data=df)
+
+  bicFull <- BIC(l00)
+  bicNull <- BIC(lNull)
+
+  anova(l00, lNull)
+  BF <- exp(-.5*(bicFull - bicNull)); BF
+
+  L <- do.call(rbind, lapply(sujs, function(s){
+                                 l <- glm(resp~alpha*block, family='binomial',
+                                          data=df[df$suj==s,])
+                                 return(data.frame(suj=s, c=l$coeff[4]))}))
+  boxplot(L$c); t.test(L$c)
+
+
+  accParamsM1 <- data.frame(ranef(l0)$suj)
+  colnames(accParamsM1) <- c('interc', 'alpha', 'block', 'alphaXblock')
+  accParamsM1$suj <- rownames(accParamsM1)
+
+  l2 <- glmer(resp~alpha*block+(1+alpha|suj), glmerControl(optimizer = "bobyqa"),
+              family='binomial', data=df)
+  l3 <- glmer(resp~alpha*block+(1+block|suj), glmerControl(optimizer = "bobyqa"),
+              family='binomial', data=df)
+  l4 <- glmer(resp~alpha*block+(1|suj), glmerControl(optimizer = "bobyqa"),
+              family='binomial', data=df)
+
+
+  anova(l1,l2)
+  anova(l1, l3)
+  anova(l1, l4)
+
+  l5 <- glmer(resp~alpha+block+(1+alpha+block|suj), glmerControl(optimizer = "bobyqa"),
+              family='binomial', data=df)
+
+  anova(l1, l5)
+  summary(l1)
+  summary(l4)
+
+  
+```
+```{r}
+
+###
+# RT
+###
+
+library(lmerTest)
+
+  library(lme4)
+  df <- data
+  df$absAlpha <- abs(df$alpha)
+  l <- lmer(logRt~absAlpha*block+(1|suj), data=df)
+  summary(l)
+
+  l <- lmer(logRt~absAlpha*block+(1+block|suj), data=df)
+  summary(l)
+
+  ranef(l)
+
+  par(mfrow=c(2,2))
+  manips <- unique(data$manip)
+  for (m in manips){
+      e <- evalq(aggregate(list(rt=rt), list(suj=suj, block=block, alpha=abs(alpha)), median),
+                 data[data$manip==m,]);
+      evalq(interaction.plot(alpha, block, rt, type='b', lwd=3, pch=20:21,
+                             cex=1.5, ylim=c(450, 700), col=1,
+                             main=m), e)
+  }
+
+
+
+  e <- evalq(aggregate(list(rt=rt), list(suj=suj, block=block, alpha=abs(alpha), manip=manip2),
+                       median),
+             data[data$manip2!='deuxOld' & data$acc==1,]);
+
+  e$alpha <- factor(e$alpha); e$block <- factor(e$block); e$manip <- factor(e$manip)
+  l0 <- aov(rt~block*alpha*manip+Error(suj/(block*alpha)), data=e[e$alpha!=0,])
+  summary(l0)
+  l1 <- aov(rt~block*alpha+Error(suj/(block*alpha)), data=e[e$alpha!=0,])
+  summary(l1)
+  
+  
+  plot.new
+  evalq(plot(density(rt), lwd=2, main='alpha=0', col=2,
+             ), data[data$alpha==0 & data$block=='noConfidence',])
+  plot.new
+  evalq(lines(density(rt), lwd=2, col=1), data[data$alpha==0 & data$block=='confidence',])
+
+  plot.new
+  evalq(plot(density(rt), lwd=2, main='alpha=2.4'),
+        data[abs(data$alpha==2.4) & data$block=='confidence',])
+  evalq(lines(density(rt), lwd=2, col=2), data[abs(data$alpha==2.4) & data$block=='noConfidence',])
+  legend("topright", lty=1, col=1:2, legend=c('With', 'Without'))
+
+  
+
+```
+

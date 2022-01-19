@@ -1,0 +1,512 @@
+Name = MyData[2:4862,2]
+for(i in 1:4861){
+if (Pconf[i] < median(MyData$Pconf[MyData$Name==Name[i]])){
+Pconf[i] <- 0
+}
+else{Pconf[i] <- 1}
+}
+d = data.frame(RtMyData,Pconf,Name,AV,AAV,logRt,PRt,Repres,PE,pRt,RtMyData)
+l0 <- lmer(logRt~AAV+Repres+PRt+Pconf+(1+AAV+PRt|Name),
+data=d);
+summary(l0)
+MyData <- read.csv(file="./datasimuNewparam.csv", header=TRUE, sep=",")
+Resp1=0.5*(1+MyData[1:4862,1]*sign(MyData[1:4862,4]))
+RtMyData=MyData[2:4862,5]
+logRt=log(RtMyData)
+AV = MyData[2:4862,4]
+Pconf = MyData[1:4861,3]
+PRt=log(MyData[1:4861,5])
+pRt=MyData[1:4861,5]
+Repres =Resp1[2:4862]
+for(i in 1:4861){
+if (Resp1[i]==Resp1[i+1]){
+Repres[i] <- 1
+}
+else{Repres[i] <- 0}
+}
+AAV = abs(AV)
+PE=0.5+0.5*MyData[1:4861,1]
+Name = MyData[2:4862,2]
+for(i in 1:4861){
+if (Pconf[i] < median(MyData$Pconf[MyData$Name==Name[i]])){
+Pconf[i] <- 0
+}
+else{Pconf[i] <- 1}
+}
+d = data.frame(RtMyData,Pconf,Name,AV,AAV,logRt,PRt,Repres,PE,pRt,RtMyData)
+l0 <- lmer(logRt~AAV+Repres+PRt+Pconf+(1+AAV+PRt|Name),
+data=d);
+summary(l0)
+MyData <- read.csv(file="./datasimuNewparam.csv", header=TRUE, sep=",")
+Resp1=0.5*(1+MyData[1:4862,1]*sign(MyData[1:4862,4]))
+RtMyData=MyData[2:4862,5]
+logRt=log(RtMyData)
+AV = MyData[2:4862,4]
+Pconf = MyData[1:4861,3]
+PRt=log(MyData[1:4861,5])
+pRt=MyData[1:4861,5]
+Repres =Resp1[2:4862]
+for(i in 1:4861){
+if (Resp1[i]==Resp1[i+1]){
+Repres[i] <- 1
+}
+else{Repres[i] <- 0}
+}
+AAV = abs(AV)
+PE=0.5+0.5*MyData[1:4861,1]
+Name = MyData[2:4862,2]
+for(i in 1:4861){
+if (Pconf[i] < median(MyData$Pconf[MyData$Name==Name[i]])){
+Pconf[i] <- 0
+}
+else{Pconf[i] <- 1}
+}
+d = data.frame(RtMyData,Pconf,Name,AV,AAV,logRt,PRt,Repres,PE,pRt,RtMyData)
+l0 <- lmer(logRt~AAV+Repres+PRt+Pconf+(1+AAV+PRt|Name),
+data=d);
+summary(l0)
+MyData <- read.csv(file="./datasimuNewparam.csv", header=TRUE, sep=",")
+Resp1=0.5*(1+MyData[1:4862,1]*sign(MyData[1:4862,4]))
+RtMyData=MyData[2:4862,5]
+logRt=log(RtMyData)
+AV = MyData[2:4862,4]
+Pconf = MyData[1:4861,3]
+PRt=log(MyData[1:4861,5])
+pRt=MyData[1:4861,5]
+Repres =Resp1[2:4862]
+for(i in 1:4861){
+if (Resp1[i]==Resp1[i+1]){
+Repres[i] <- 1
+}
+else{Repres[i] <- 0}
+}
+AAV = abs(AV)
+PE=0.5+0.5*MyData[1:4861,1]
+Name = MyData[2:4862,2]
+for(i in 1:4861){
+if (Pconf[i] < median(MyData$Pconf[MyData$Name==Name[i]])){
+Pconf[i] <- 0
+}
+else{Pconf[i] <- 1}
+}
+d = data.frame(RtMyData,Pconf,Name,AV,AAV,logRt,PRt,Repres,PE,pRt,RtMyData)
+l0 <- lmer(logRt~AAV+Repres+PRt+Pconf+(1+AAV+PRt|Name),
+data=d);
+summary(l0)
+MyData <- read.csv(file="./datasimuNewparam.csv", header=TRUE, sep=",")
+Resp1=0.5*(1+MyData[1:4862,1]*sign(MyData[1:4862,4]))
+RtMyData=MyData[2:4862,5]
+logRt=log(RtMyData)
+AV = MyData[2:4862,4]
+Pconf = MyData[1:4861,3]
+PRt=log(MyData[1:4861,5])
+pRt=MyData[1:4861,5]
+Repres =Resp1[2:4862]
+for(i in 1:4861){
+if (Resp1[i]==Resp1[i+1]){
+Repres[i] <- 1
+}
+else{Repres[i] <- 0}
+}
+AAV = abs(AV)
+PE=0.5+0.5*MyData[1:4861,1]
+Name = MyData[2:4862,2]
+for(i in 1:4861){
+if (Pconf[i] < median(MyData$Pconf[MyData$Name==Name[i]])){
+Pconf[i] <- 0
+}
+else{Pconf[i] <- 1}
+}
+d = data.frame(RtMyData,Pconf,Name,AV,AAV,logRt,PRt,Repres,PE,pRt,RtMyData)
+l0 <- lmer(logRt~AAV+Repres+PRt+Pconf+(1+AAV+PRt|Name),
+data=d);
+summary(l0)
+MyData <- read.csv(file="./datasimuNewparam.csv", header=TRUE, sep=",")
+Resp1=0.5*(1+MyData[1:4862,1]*sign(MyData[1:4862,4]))
+RtMyData=MyData[2:4862,5]
+logRt=log(RtMyData)
+AV = MyData[2:4862,4]
+Pconf = MyData[1:4861,3]
+PRt=log(MyData[1:4861,5])
+pRt=MyData[1:4861,5]
+Repres =Resp1[2:4862]
+for(i in 1:4861){
+if (Resp1[i]==Resp1[i+1]){
+Repres[i] <- 1
+}
+else{Repres[i] <- 0}
+}
+AAV = abs(AV)
+PE=0.5+0.5*MyData[1:4861,1]
+Name = MyData[2:4862,2]
+for(i in 1:4861){
+if (Pconf[i] < median(MyData$Pconf[MyData$Name==Name[i]])){
+Pconf[i] <- 0
+}
+else{Pconf[i] <- 1}
+}
+d = data.frame(RtMyData,Pconf,Name,AV,AAV,logRt,PRt,Repres,PE,pRt,RtMyData)
+l0 <- lmer(logRt~AAV+Repres+PRt+Pconf+(1+AAV+PRt|Name),
+data=d);
+summary(l0)
+MyData <- read.csv(file="./datasimuNewparam.csv", header=TRUE, sep=",")
+Resp1=0.5*(1+MyData[1:4862,1]*sign(MyData[1:4862,4]))
+RtMyData=MyData[2:4862,5]
+logRt=log(RtMyData)
+AV = MyData[2:4862,4]
+Pconf = MyData[1:4861,3]
+PRt=log(MyData[1:4861,5])
+pRt=MyData[1:4861,5]
+Repres =Resp1[2:4862]
+for(i in 1:4861){
+if (Resp1[i]==Resp1[i+1]){
+Repres[i] <- 1
+}
+else{Repres[i] <- 0}
+}
+AAV = abs(AV)
+PE=0.5+0.5*MyData[1:4861,1]
+Name = MyData[2:4862,2]
+for(i in 1:4861){
+if (Pconf[i] < median(MyData$Pconf[MyData$Name==Name[i]])){
+Pconf[i] <- 0
+}
+else{Pconf[i] <- 1}
+}
+d = data.frame(RtMyData,Pconf,Name,AV,AAV,logRt,PRt,Repres,PE,pRt,RtMyData)
+l0 <- lmer(logRt~AAV+Repres+PRt+Pconf+(1+AAV+PRt|Name),
+data=d);
+summary(l0)
+MyData <- read.csv(file="./datasimuNewparam.csv", header=TRUE, sep=",")
+Resp1=0.5*(1+MyData[1:4862,1]*sign(MyData[1:4862,4]))
+RtMyData=MyData[2:4862,5]
+logRt=log(RtMyData)
+AV = MyData[2:4862,4]
+Pconf = MyData[1:4861,3]
+PRt=log(MyData[1:4861,5])
+pRt=MyData[1:4861,5]
+Repres =Resp1[2:4862]
+for(i in 1:4861){
+if (Resp1[i]==Resp1[i+1]){
+Repres[i] <- 1
+}
+else{Repres[i] <- 0}
+}
+AAV = abs(AV)
+PE=0.5+0.5*MyData[1:4861,1]
+Name = MyData[2:4862,2]
+for(i in 1:4861){
+if (Pconf[i] < median(MyData$Pconf[MyData$Name==Name[i]])){
+Pconf[i] <- 0
+}
+else{Pconf[i] <- 1}
+}
+d = data.frame(RtMyData,Pconf,Name,AV,AAV,logRt,PRt,Repres,PE,pRt,RtMyData)
+l0 <- lmer(logRt~AAV+Repres+PRt+Pconf+(1+AAV+PRt|Name),
+data=d);
+summary(l0)
+MyData <- read.csv(file="./datasimuNewparam.csv", header=TRUE, sep=",")
+Resp1=0.5*(1+MyData[1:4862,1]*sign(MyData[1:4862,4]))
+RtMyData=MyData[2:4862,5]
+logRt=log(RtMyData)
+AV = MyData[2:4862,4]
+Pconf = MyData[1:4861,3]
+PRt=log(MyData[1:4861,5])
+pRt=MyData[1:4861,5]
+Repres =Resp1[2:4862]
+for(i in 1:4861){
+if (Resp1[i]==Resp1[i+1]){
+Repres[i] <- 1
+}
+else{Repres[i] <- 0}
+}
+AAV = abs(AV)
+PE=0.5+0.5*MyData[1:4861,1]
+Name = MyData[2:4862,2]
+for(i in 1:4861){
+if (Pconf[i] < median(MyData$Pconf[MyData$Name==Name[i]])){
+Pconf[i] <- 0
+}
+else{Pconf[i] <- 1}
+}
+d = data.frame(RtMyData,Pconf,Name,AV,AAV,logRt,PRt,Repres,PE,pRt,RtMyData)
+l0 <- lmer(logRt~AAV+Repres+PRt+Pconf+(1+AAV+PRt|Name),
+data=d);
+summary(l0)
+MyData <- read.csv(file="./datasimuNewparam.csv", header=TRUE, sep=",")
+Resp1=0.5*(1+MyData[1:4862,1]*sign(MyData[1:4862,4]))
+RtMyData=MyData[2:4862,5]
+logRt=log(RtMyData)
+AV = MyData[2:4862,4]
+Pconf = MyData[1:4861,3]
+PRt=log(MyData[1:4861,5])
+pRt=MyData[1:4861,5]
+Repres =Resp1[2:4862]
+for(i in 1:4861){
+if (Resp1[i]==Resp1[i+1]){
+Repres[i] <- 1
+}
+else{Repres[i] <- 0}
+}
+AAV = abs(AV)
+PE=0.5+0.5*MyData[1:4861,1]
+Name = MyData[2:4862,2]
+for(i in 1:4861){
+if (Pconf[i] < median(MyData$Pconf[MyData$Name==Name[i]])){
+Pconf[i] <- 0
+}
+else{Pconf[i] <- 1}
+}
+d = data.frame(RtMyData,Pconf,Name,AV,AAV,logRt,PRt,Repres,PE,pRt,RtMyData)
+l0 <- lmer(logRt~AAV+Repres+PRt+Pconf+(1+AAV+PRt|Name),
+data=d);
+summary(l0)
+MyData <- read.csv(file="./datasimuNewparam.csv", header=TRUE, sep=",")
+Resp1=0.5*(1+MyData[1:4862,1]*sign(MyData[1:4862,4]))
+RtMyData=MyData[2:4862,5]
+logRt=log(RtMyData)
+AV = MyData[2:4862,4]
+Pconf = MyData[1:4861,3]
+PRt=log(MyData[1:4861,5])
+pRt=MyData[1:4861,5]
+Repres =Resp1[2:4862]
+for(i in 1:4861){
+if (Resp1[i]==Resp1[i+1]){
+Repres[i] <- 1
+}
+else{Repres[i] <- 0}
+}
+AAV = abs(AV)
+PE=0.5+0.5*MyData[1:4861,1]
+Name = MyData[2:4862,2]
+for(i in 1:4861){
+if (Pconf[i] < median(MyData$Pconf[MyData$Name==Name[i]])){
+Pconf[i] <- 0
+}
+else{Pconf[i] <- 1}
+}
+d = data.frame(RtMyData,Pconf,Name,AV,AAV,logRt,PRt,Repres,PE,pRt,RtMyData)
+l0 <- lmer(logRt~AAV+Repres+PRt+Pconf+(1+AAV+PRt|Name),
+data=d);
+summary(l0)
+MyData <- read.csv(file="./datasimuNewparam.csv", header=TRUE, sep=",")
+Resp1=0.5*(1+MyData[1:4862,1]*sign(MyData[1:4862,4]))
+RtMyData=MyData[2:4862,5]
+logRt=log(RtMyData)
+AV = MyData[2:4862,4]
+Pconf = MyData[1:4861,3]
+PRt=log(MyData[1:4861,5])
+pRt=MyData[1:4861,5]
+Repres =Resp1[2:4862]
+for(i in 1:4861){
+if (Resp1[i]==Resp1[i+1]){
+Repres[i] <- 1
+}
+else{Repres[i] <- 0}
+}
+AAV = abs(AV)
+PE=0.5+0.5*MyData[1:4861,1]
+Name = MyData[2:4862,2]
+for(i in 1:4861){
+if (Pconf[i] < median(MyData$Pconf[MyData$Name==Name[i]])){
+Pconf[i] <- 0
+}
+else{Pconf[i] <- 1}
+}
+d = data.frame(RtMyData,Pconf,Name,AV,AAV,logRt,PRt,Repres,PE,pRt,RtMyData)
+l0 <- lmer(logRt~AAV+Repres+PRt+Pconf+(1+AAV+PRt|Name),
+data=d);
+summary(l0)
+install.packages("lme4")
+install.packages(c("lmerTest", "arm"))
+library("arm")
+library("metaSDT")
+install.packages("devtools")
+library(devtools)
+install_github("craddm/metaSDT")
+library("metaSDT")
+install.packages("car")
+library(car)
+library(car)
+MyData <- read.csv(file="C:\\Users\\kevin\\Documents\\1 - PhD Projects\\2 - Confidence Attractor Network\\3-Experiment-Confidence\\2-Data\\ManipDEC\\Manip3.csv", header=TRUE, sep=",")
+MyData=MyData[2:6602,1:13]
+Resp1=MyData[2:6601,7]
+Resp1=MyData[2:6601,7]
+RtMyData=MyData[2:6601,6]
+AV = MyData[2:6601,5]
+Pconf = MyData[1:6600,13]
+AAV = MyData[2:6601,5]
+PE=MyData[2:6601,10]
+View(MyData)
+View(MyData)
+View(MyData)
+View(MyData)
+Acc=MyData[2:6601,9]
+Name = MyData[2:6601,1]
+for(i in 1:6600){
+if (Pconf[i] < median(MyData$Resp2[MyData$Name==Name[i]])){
+Pconf[i] <- 0
+}
+else{Pconf[i] <- 1}
+}
+PRt=log(MyData[1:6600,6])
+pRt=MyData[1:6600,6]
+library(lmerTest)
+dAcc = data.frame(RtMyData,Pconf,Name,AV,AAV,PE,Resp1,logRt,PRt,Repres,Acc)
+d = data.frame(RtMyData,Pconf,Name,AV,AAV,PE,Resp1,logRt,PRt,Repres)
+PE=MyData[2:6601,10]
+Acc=MyData[2:6601,9]
+Name = MyData[2:6601,1]
+PRt=log(MyData[1:6600,6])
+pRt=MyData[1:6600,6]
+Repres =MyData[2:6601,7]
+for(i in 1:6599){
+if (Resp1[i]==Resp1[i+1]){
+Repres[i] <- 1
+}
+else{Repres[i] <- 0}
+}
+library(lmerTest)
+d = data.frame(RtMyData,Pconf,Name,AV,AAV,PE,Resp1,logRt,PRt,Repres)
+Acc=MyData[2:6601,9]
+View(d)
+RtMyData=MyData[2:6601,6]
+logRt=log(RtMyData)
+d = data.frame(RtMyData,Pconf,Name,AV,AAV,PE,Resp1,logRt,PRt,Repres)
+dAcc = data.frame(RtMyData,Pconf,Name,AV,AAV,PE,Resp1,logRt,PRt,Repres,Acc)
+Acc=(MyData[2:6601,9]+1)/2
+Acc=
+dAcc = data.frame(RtMyData,Pconf,Name,AV,AAV,PE,Resp1,logRt,PRt,Repres,Acc)
+dAcc = data.frame(RtMyData,Pconf,Name,AV,AAV,PE,Resp1,logRt,PRt,Repres,Acc)
+Acc=(MyData[2:6601,9]+1)/2
+dAcc = data.frame(RtMyData,Pconf,Name,AV,AAV,PE,Resp1,logRt,PRt,Repres,Acc)
+glm(formula = Acc ~ AAV + Pconf + Repres+ (1 + AAV|Name), family = "binomial",data=dAcc)
+l <- glm(formula = Acc ~ AAV + Pconf + Repres+ (1 + AAV|Name), family = "binomial",data=dAcc)
+summary(l)
+l <- glm(formula = Acc ~ AAV + Pconf + Repres+ (1 + AAV + Repres|Name), family = "binomial",data=dAcc)
+summary(l)
+l <- glm(formula = Acc ~ AAV + Pconf + Repres+ (1 + AAV + Pconf|Name), family = "binomial",data=dAcc)
+summary(l)
+l <- glmer(formula = Acc ~ AAV + Pconf + Repres+ (1 + AAV + Pconf|Name), family = "binomial",data=dAcc)
+l <- glmer(formula = Acc ~ AAV + Pconf + Repres+ (1 + AAV + Pconf|Name), family = "binomial",data=dAcc)
+summary(l)
+l <- glmer(formula = Acc ~ AAV + Pconf + Repres+ (1 + AAV |Name), family = "binomial", glmerControl(optimizer = "bobyqa"),data=dAcc)
+summary(l)
+l <- glmer(formula = Acc ~ AAV + Pconf + (1 + AAV |Name), family = "binomial", glmerControl(optimizer = "bobyqa"),data=dAcc)
+summary(l)
+AAV = abs.(MyData[2:6601,5])
+AAV = abs(MyData[2:6601,5])
+d = data.frame(RtMyData,Pconf,Name,AV,AAV,PE,Resp1,logRt,PRt,Repres)
+l <- lmer(logRt~AAV + Pconf + PRt + Repres + (1+AAV+PRt |Name),data=d)
+summary(l)
+dAcc = data.frame(RtMyData,Pconf,Name,AV,AAV,PE,Resp1,logRt,PRt,Repres,Acc)
+l <- glmer(formula = Acc ~ AAV + Pconf + (1 + AAV |Name), family = "binomial", glmerControl(optimizer = "bobyqa"),data=dAcc)
+summary(l)
+l <- glmer(formula = Acc ~ AAV + Pconf + Repres + (1 + AAV |Name), family = "binomial", glmerControl(optimizer = "bobyqa"),data=dAcc)
+summary(l)
+library("metaSDT")
+MyData <- read.csv(file=".\\datasimuNewparam.csv", header=TRUE, sep=",")
+View(MyData)
+Resp1=0.5*(1+MyData[1:4862,1]*sign(MyData[1:4862,4]))
+RtMyData=MyData[2:4862,5]
+logRt=log(RtMyData)
+Pconf = MyData[1:4861,3]
+PRt=log(MyData[1:4861,5])
+Repres =Resp1[2:4862]
+AAV = abs(AV)
+PE=0.5+0.5*MyData[1:4861,1]
+for(i in 1:4861){
+if (Pconf[i] < median(MyData$Pconf[MyData$Name==Name[i]])){
+Pconf[i] <- 0
+}
+else{Pconf[i] <- 1}
+}
+PE=0.5+0.5*MyData[1:4861,1]
+Name = MyData[2:4862,2]
+for(i in 1:4861){
+if (Pconf[i] < median(MyData$Pconf[MyData$Name==Name[i]])){
+Pconf[i] <- 0
+}
+else{Pconf[i] <- 1}
+}
+dAcc = data.frame(RtMyData,Pconf,Name,AV,Resp1[2:4862],AAV,logRt,PRt,Repres,PE,pRt,RtMyData)
+logRt=log(RtMyData)
+AV = MyData[2:4862,4]
+Pconf = MyData[1:4861,3]
+PRt=log(MyData[1:4861,5])
+pRt=MyData[1:4861,5]
+AAV = abs(AV)
+PE=0.5+0.5*MyData[1:4861,1]
+dAcc = data.frame(RtMyData,Pconf,Name,AV,Resp1[2:4862],AAV,logRt,PRt,Repres,PE,pRt,RtMyData)
+View(dAcc)
+l<-  glmer(formula = Resp1.2.4862 ~ AAV + Pconf + Repres + (1 + AAV |Name), family = "binomial", glmerControl(optimizer = "bobyqa"),data=dAcc)
+l<-  glmer(formula = Resp1.2.4862. ~ AAV + Pconf + Repres + (1 + AAV |Name), family = "binomial", glmerControl(optimizer = "bobyqa"),data=dAcc)
+summary(l)
+l<-  glmer(formula = Resp1.2.4862. ~ AAV + Pconf + Repres + (1 + AAV +Repres|Name), family = "binomial", glmerControl(optimizer = "bobyqa"),data=dAcc)
+summary(l)
+mean(Acc[Pconf==0])
+mean(Acc[Pconf==1])
+A0=Acc[Pconf==0]
+A1=Acc[Pconf==1]
+fisher.test(A0,A1,alternative="less")
+MyData <- read.csv(file="C:\\Users\\kevin\\Documents\\1 - PhD Projects\\2 - Confidence Attractor Network\\3-Experiment-Confidence\\2-Data\\ManipDEC\\Manip3.csv", header=TRUE, sep=",")
+MyData=MyData[2:6602,1:13]
+RtMyData=MyData[2:6601,6]
+logRt=log(RtMyData)
+AV = MyData[2:6601,5]
+Pconf = MyData[1:6600,13]
+MyData$AngleValue=abs(MyData$AngleValue)
+AAV = abs(MyData[2:6601,5])
+PE=MyData[2:6601,10]
+Acc=(MyData[2:6601,9]+1)/2
+Name = MyData[2:6601,1]
+for(i in 1:6600){
+if (Pconf[i] < median(MyData$Resp2[MyData$Name==Name[i]])){
+Pconf[i] <- 0
+}
+else{Pconf[i] <- 1}
+}
+PRt=log(MyData[1:6600,6])
+pRt=MyData[1:6600,6]
+Repres =MyData[2:6601,7]
+for(i in 1:6599){
+if (Resp1[i]==Resp1[i+1]){
+Repres[i] <- 1
+}
+else{Repres[i] <- 0}
+}
+mean(Acc[Pconf==0])
+A0=Acc[Pconf==0]
+mean(Acc[Pconf==1])
+A1=Acc[Pconf==1]
+fisher.test(A0,A1,alternative="less")
+fisher.test(A0,A1[1:2534],alternative="less")
+l <- glmer(formula = Acc ~ AAV + Pconf + Repres + (1 + AAV |Name), family = "binomial", glmerControl(optimizer = "bobyqa"),data=dAcc)
+dAcc = data.frame(RtMyData,Pconf,Name,AV,AAV,PE,Resp1,logRt,PRt,Repres,Acc)
+AAV = abs(MyData[2:6601,5])
+PE=MyData[2:6601,10]
+Acc=(MyData[2:6601,9]+1)/2
+dAcc = data.frame(RtMyData,Pconf,Name,AV,AAV,PE,Resp1,logRt,PRt,Repres,Acc)
+PRt=log(MyData[1:6600,6])
+pRt=MyData[1:6600,6]
+Repres =MyData[2:6601,7]
+for(i in 1:6599){
+if (Resp1[i]==Resp1[i+1]){
+Repres[i] <- 1
+}
+else{Repres[i] <- 0}
+}
+Acc=(MyData[2:6601,9]+1)/2
+Name = MyData[2:6601,1]
+Resp1=MyData[2:6601,7]
+for(i in 1:6599){
+if (Resp1[i]==Resp1[i+1]){
+Repres[i] <- 1
+}
+else{Repres[i] <- 0}
+}
+dAcc = data.frame(RtMyData,Pconf,Name,AV,AAV,PE,Resp1,logRt,PRt,Repres,Acc)
+l <- glmer(formula = Acc ~ AAV + Pconf + Repres + (1 + AAV |Name), family = "binomial", glmerControl(optimizer = "bobyqa"),data=dAcc)
+summary(l)
+l <- glmer(formula = Acc ~ AAV + Pconf + Repres + (1 + AAV + Pconf |Name), family = "binomial", glmerControl(optimizer = "bobyqa"),data=dAcc)
+summary(l)
